@@ -780,11 +780,6 @@ async def admin_dashboard():
 
 # ============ Health ============
 
-@api_router.get("/")
-async def root():
-    return {"message": "Labour Connect API"}
-
-app.include_router(api_router)
 
 @api_router.get("/")
 async def root():
@@ -805,15 +800,56 @@ logger = logging.getLogger(__name__)
 
 @app.on_event("startup")
 async def startup():
+    print("=== STARTUP BEGIN ===")
+
+    try:
+        await db.command("ping")
+        print("✅ MongoDB Connected Successfully")
+    except Exception as e:
+        print("❌ MongoDB Error:", e)
+        raise
+
+    print("Creating indexes...")
+
     await db.users.create_index("email", unique=True)
+    print("users index created")
+
     await db.workers.create_index("category")
+    print("workers category index created")
+
     await db.workers.create_index("rating")
+    print("workers rating index created")
+
     await db.bookings.create_index("customer_id")
+    print("booking customer index created")
+
     await db.bookings.create_index("worker_id")
-    await db.reviews.create_index([("booking_id", 1), ("customer_id", 1)], unique=True)
-    await db.messages.create_index([("from_user_id", 1), ("to_user_id", 1), ("created_at", 1)])
-    logger.info("Labour Connect API ready")
+    print("booking worker index created")
+
+    await db.reviews.create_index(
+        [("booking_id", 1), ("customer_id", 1)],
+        unique=True
+    )
+    print("reviews index created")
+
+    await db.messages.create_index(
+        [("from_user_id", 1), ("to_user_id", 1), ("created_at", 1)]
+    )
+    print("messages index created")
+
+    print("✅ STARTUP COMPLETE")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
+if __name__ == "__main__":
+    import uvicorn
+    import os
+
+    port = int(os.environ.get("PORT", 8000))
+
+    uvicorn.run(
+        "server:app",
+        host="0.0.0.0",
+        port=port,
+    )
