@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LabourLink Admin</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/sidebar.css">
+<link rel="stylesheet" href="css/dashboard.css">
+
+</head>
+
+<body>
+
+<div class="layout">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<div class="logo">
+
+<img src="assets/logo.png">
+
+<h3>LabourLink</h3>
+
+</div>
+
+<ul>
+
+<li class="active">
+<i class="fa-solid fa-chart-line"></i>
+Dashboard
+</li>
+
+<li onclick="location.href='users.html'">
+<i class="fa-solid fa-users"></i>
+Users
+</li>
+
+<li onclick="location.href='workers.html'">
+<i class="fa-solid fa-user-helmet-safety"></i>
+Workers
+</li>
+
+<li onclick="location.href='services.html'">
+<i class="fa-solid fa-screwdriver-wrench"></i>
+Services
+</li>
+
+<li onclick="location.href='bookings.html'">
+<i class="fa-solid fa-calendar-check"></i>
+Bookings
+</li>
+
+<li onclick="location.href='payments.html'">
+<i class="fa-solid fa-credit-card"></i>
+Payments
+</li>
+
+<li onclick="location.href='withdrawals.html'">
+<i class="fa-solid fa-wallet"></i>
+Withdrawals
+</li>
+
+<li onclick="location.href='settings.html'">
+<i class="fa-solid fa-gear"></i>
+Settings
+</li>
+
+</ul>
+
+</div>
+
+<!-- Main -->
+
+<div class="content">
+
+<div class="topbar">
+
+<div>
+
+<h2>Dashboard</h2>
+
+<p>Welcome Back Admin 👋</p>
+
+</div>
+
+<div class="profile">
+
+<img src="assets/avatar.png">
+
+</div>
+
+</div>
+
+<!-- Cards -->
+
+<div class="cards">
+
+<div class="card-box">
+
+<i class="fa-solid fa-users"></i>
+
+<h5>Total Users</h5>
+
+<h2 id="usersCount">0</h2>
+
+</div>
+
+<div class="card-box">
+
+<i class="fa-solid fa-user-helmet-safety"></i>
+
+<h5>Total Workers</h5>
+
+<h2 id="workerCount">0</h2>
+
+</div>
+
+<div class="card-box">
+
+<i class="fa-solid fa-calendar-check"></i>
+
+<h5>Bookings</h5>
+
+<h2 id="bookingCount">0</h2>
+
+</div>
+
+<div class="card-box">
+
+<i class="fa-solid fa-indian-rupee-sign"></i>
+
+<h5>Revenue</h5>
+
+<h2 id="revenue">₹0</h2>
+
+</div>
+
+</div>
+
+<!-- Recent Bookings -->
+
+<div class="table-card">
+
+<div class="table-title">
+
+<h4>Recent Bookings</h4>
+
+</div>
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Customer</th>
+
+<th>Worker</th>
+
+<th>Status</th>
+
+<th>Amount</th>
+
+</tr>
+
+</thead>
+
+<tbody id="bookingTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="js/dashboard.js"></script>
+
+</body>
+
+</html>

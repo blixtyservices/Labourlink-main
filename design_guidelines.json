@@ -1,0 +1,179 @@
+{
+  "app_name": "Labour Connect",
+  "personality": "1 iOS-Native Clean",
+  "personality_one_liner": "A premium, trust-driven marketplace interface that feels highly polished, framing the workers and services as the core heroes through generous spacing and structural clarity.",
+  "color": {
+    "surface": "#FFFFFF",
+    "onSurface": "#1C1C1E",
+    "surfaceSecondary": "#F7F7F9",
+    "onSurfaceSecondary": "#4A4A4C",
+    "surfaceTertiary": "#EFEFEF",
+    "onSurfaceTertiary": "#6C6C6E",
+    "surfaceInverse": "#1C1C1E",
+    "onSurfaceInverse": "#FFFFFF",
+    "brand": "#0A7D56",
+    "brandPrimary": "#0A7D56",
+    "onBrandPrimary": "#FFFFFF",
+    "brandSecondary": "#159A6F",
+    "onBrandSecondary": "#FFFFFF",
+    "brandTertiary": "#E6F5F0",
+    "onBrandTertiary": "#0A7D56",
+    "success": "#28A745",
+    "onSuccess": "#FFFFFF",
+    "warning": "#F5A623",
+    "onWarning": "#1C1C1E",
+    "error": "#E03B24",
+    "onError": "#FFFFFF",
+    "info": "#607D8B",
+    "onInfo": "#FFFFFF",
+    "border": "#E5E5E5",
+    "borderStrong": "#C2C2C2",
+    "divider": "#F0F0F0"
+  },
+  "typography": {
+    "displayFontFamily": "Plus Jakarta Sans",
+    "textFontFamily": "Plus Jakarta Sans",
+    "scale": {
+      "sm": 12,
+      "base": 14,
+      "lg": 16,
+      "xl": 20,
+      "2xl": 24
+    }
+  },
+  "spacing": {
+    "rule": "Generous padding around content to let features and profile details breathe. Stick to standard increments. Use padding instead of borders wherever possible.",
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "2xl": 32,
+    "3xl": 48
+  },
+  "radius_tokens": {
+    "sm": 6,
+    "md": 12,
+    "lg": 20,
+    "pill": 999
+  },
+  "shadow_tier": "1",
+  "navigation": "bottom_tabs",
+  "icon_set": "Phosphor",
+  "glassmorphism": {
+    "enabled": "true",
+    "do's": [
+      "Apply to sticky headers over scrolling content",
+      "Apply to the bottom tab bar when content scrolls behind it",
+      "Apply to the pinned filter rows on the category browse screen",
+      "Apply to the background of the sticky primary CTA container at the bottom"
+    ],
+    "dont's": [
+      "Never apply to form fields, body text regions, or standard list rows",
+      "Do not over-blur; ensure the underlying tint is at least 70% opacity in light mode for readability"
+    ]
+  },
+  "platform_libraries": {
+    "glass": {
+      "ios": "expo-glass-effect",
+      "android": "expo-blur",
+      "low_end_android_fallback": "solid surfaceSecondary"
+    },
+    "image": "expo-image",
+    "blur": "expo-blur",
+    "bottom_sheet": "@gorhom/bottom-sheet",
+    "animation": "react-native-reanimated",
+    "gesture": "react-native-gesture-handler"
+  },
+  "screens": [
+    {
+      "name": "Home",
+      "purpose": "Discover services quickly and see personalized recommendations or recently booked workers.",
+      "states": {
+        "loading": "Skeleton loaders for categories and hero banner.",
+        "empty": "No services available in this area illustration.",
+        "error": "Failed to load services. Please check your connection."
+      },
+      "layout": "Location indicator top bar (glass). Search bar. Hero Promo Banner (using abstract texture background with gradient scrim). A 'Service Categories' section using a grid of brandTertiary-tinted icons or category cards. A 'Top Rated Workers' horizontal scrolling section."
+    },
+    {
+      "name": "CategoryBrowse",
+      "purpose": "List available workers in a specific category with filters.",
+      "states": {
+        "loading": "List skeleton.",
+        "empty": "Illustration showing no workers found for this category.",
+        "error": "Could not fetch workers."
+      },
+      "layout": "Sticky glass header with category name. Pinned glass filter row (Sort, Rating, Price). Vertical list of worker cards. Card layout: Avatar, Name, Rating/Jobs metric row, Hourly rate, and a subtle 'Book' button."
+    },
+    {
+      "name": "WorkerProfile",
+      "purpose": "Build trust and provide detailed information leading to a booking decision.",
+      "states": {
+        "loading": "Profile skeleton.",
+        "empty": "Profile unavailable.",
+        "error": "Failed to load profile details."
+      },
+      "layout": "Cover image (abstract texture) with a top-down gradient scrim. Overlapping large circular avatar. Name, verified badge, and role. Horizontal scrollable metrics (Rating, Jobs completed, Experience). Bulleted list of skills. Bottom anchored sticky CTA 'Book Now' floating over content."
+    },
+    {
+      "name": "BookingFlow",
+      "purpose": "Streamlined, minimal-friction checkout process.",
+      "states": {
+        "loading": "Loading slots...",
+        "empty": "No slots available today.",
+        "error": "Failed to confirm booking."
+      },
+      "layout": "Date/time slot picker grid. Location address input. Price summary card (Base + Fees = Total). Fixed bottom CTA 'Confirm Booking'."
+    },
+    {
+      "name": "WorkerDashboard",
+      "purpose": "Command center for the worker to accept jobs and see earnings.",
+      "states": {
+        "loading": "Dashboard skeleton.",
+        "empty": "No new job requests.",
+        "error": "Failed to load dashboard."
+      },
+      "layout": "Header with 'Online/Offline' toggle. Highlighted Earnings Summary card. Vertical list of 'Incoming Requests' with Accept/Reject actions."
+    }
+  ],
+  "images": {
+    "hero_banner": {
+      "url": "https://images.unsplash.com/photo-1541140134513-85a161dc4a00?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODB8MHwxfHNlYXJjaHwxfHxwcmVtaXVtJTIwYWJzdHJhY3QlMjB0ZXh0dXJlJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3ODI4MTc4MTR8MA&ixlib=rb-4.1.0&q=85",
+      "alt": "Premium abstract texture background"
+    },
+    "category_electrician": {
+      "url": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHwxfHxlbGVjdHJpY2lhbiUyMHJlcGFpcmluZ3xlbnwwfHx8fDE3ODI4MTc4MTR8MA&ixlib=rb-4.1.0&q=85",
+      "alt": "Electrician repairing"
+    },
+    "category_cleaner": {
+      "url": "https://images.unsplash.com/photo-1740657254989-42fe9c3b8cce?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHwxfHxob3VzZSUyMGNsZWFuaW5nJTIwcHJvZmVzc2lvbmFsfGVufDB8fHx8MTc4MjgxNzgxNHww&ixlib=rb-4.1.0&q=85",
+      "alt": "House cleaning professional"
+    },
+    "category_carpenter": {
+      "url": "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHwxfHxjYXJwZW50ZXIlMjB3b3JraW5nfGVufDB8fHx8MTc4MjgxNzgxNHww&ixlib=rb-4.1.0&q=85",
+      "alt": "Carpenter working"
+    },
+    "worker_avatar_example": {
+      "url": "https://images.unsplash.com/photo-1679679811837-c28b2586f533?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzl8MHwxfHNlYXJjaHwxfHxzbWlsaW5nJTIwd29ya2VyJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzgyODE3ODE0fDA&ixlib=rb-4.1.0&q=85",
+      "alt": "Smiling worker portrait"
+    }
+  },
+  "haptics": {
+    "events": {
+      "tab_press": "light",
+      "category_select": "medium",
+      "button_press": "medium",
+      "booking_confirm": "success"
+    }
+  },
+  "instructions_to_main_agent": [
+    "Strictly follow the '1 iOS-Native Clean' personality constraints: clean, minimal interface prioritizing typography and whitespace. Do not use generic AI aesthetics or banned colors (No Blue/Indigo/Purple).",
+    "Font Weight Cap: Max font weight is 500 across the entire app. Rely on font size (e.g. 24px) for visual hierarchy, not heavy weights.",
+    "Implement a Gradient Scrim on all images that contain overlaid text. Use a 3-stop vertical linear gradient: transparent at 0% -> ~20% surfaceInverse at 50% -> >=70% surfaceInverse at 100%.",
+    "Ensure 'Book Now' or 'Confirm' CTAs are sticky at the bottom. Use a container with safe-area padding and a glass background or solid surface fade so scrolling content smoothly disappears behind it.",
+    "For service categories, use 'brandTertiary' tinted squares for icons or layout a 2-col grid for image-led cards.",
+    "Do not use generic circle placeholders for avatars. Use the provided real worker portrait or generate initials if fallbacks are needed.",
+    "Include haptic feedback hooks as detailed in the haptics block (button_press, tab_press, category_select, booking_confirm)."
+  ]
+}

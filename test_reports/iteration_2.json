@@ -1,0 +1,44 @@
+{
+  "summary": "Security-audit-fix verification on LabourLink AI backend. 19/20 pytest tests PASSED (95%). SEC-001 booking state machine ✅ (worker PATCH status='completed' correctly maps to 'completed_by_worker'; only customer can promote to 'completed'; jobs_completed increments ONLY after customer confirms — verified before=0, after=1). SEC-001 withdrawal cap ✅ (amount > balance returns 400 with 'exceeds available balance'; a valid withdrawal < balance succeeded). SEC-002 ✅ (.env JWT_SECRET is 64-char high-entropy, not 'change-in-prod'; decoded fresh token confirms exp - iat ≈ 7.00 days). SEC-003 PARTIAL — /api/workers, /api/workers/popular, /api/workers/{id} all exclude phone & user_id correctly, BUT /api/workers/recommendations STILL LEAKS BOTH 'phone' and 'user_id' (it uses {'_id': 0} projection at server.py:236 instead of PUBLIC_WORKER_EXCLUDE). SEC-004 ✅ (duplicate review POST returns 400; unique compound index (booking_id, customer_id) is created in startup; self-onboarded fresh worker has verified=False). SEC-005 ✅ (search='.*' returns 0 workers, confirming _re.escape works). Existing flows verified: register, login, list workers, create booking, worker accept→started→completed_by_worker, customer confirm→completed, single review, favorites add/list/delete, chat send/receive.",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "GET /api/workers/recommendations",
+        "issue": "SEC-003 FIX INCOMPLETE — endpoint still leaks 'phone' and 'user_id' for every worker in the recommendations array. Root cause: server.py line 236 uses projection `{'_id': 0}` instead of the new `PUBLIC_WORKER_EXCLUDE` ({_id:0, phone:0, user_id:0}). Change `db.workers.find(q, {'_id': 0})` to `db.workers.find(q, PUBLIC_WORKER_EXCLUDE)`.",
+        "priority": "HIGH"
+      }
+    ],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_security_fixes.py",
+    "/app/test_reports/pytest/sec_results.xml"
+  ],
+  "action_items": [
+    "Fix server.py:236 — change `db.workers.find(q, {'_id': 0})` to `db.workers.find(q, PUBLIC_WORKER_EXCLUDE)` so /api/workers/recommendations stops leaking phone/user_id. After fix, re-run only: pytest backend/tests/test_security_fixes.py::TestSEC003WorkerPII -v"
+  ],
+  "critical_code_review_comments": [
+    "Projection inconsistency: 3 of 4 public worker endpoints use PUBLIC_WORKER_EXCLUDE; the recommendations endpoint forgot it. Consider a single helper to enforce the public projection.",
+    "BookingStatusUpdate Literal allows clients to directly POST status='completed_by_worker'. Worker→customer mapping is the safe path, but a worker could still send status='completed_by_worker' literally. Current state machine `role_allowed` blocks it ('started' → only {'completed_by_worker'} for worker AND `effective_new` is unchanged because requested_role is worker and new_status != 'completed' → effective_new stays 'completed_by_worker' → allowed). So actually it's fine, but verify intent.",
+    "Withdrawal balance check now correctly recomputes server-side (sum(completed) - sum(pending+completed withdrawals)). Good.",
+    "Reviews unique index requires fresh DB or non-existent prior conflicting rows; if old data has duplicates, startup index creation will fail silently. Verified startup succeeded here.",
+    "server.py now 728 lines — exceeds the 700-line threshold; consider splitting into modules."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_security_fixes.py (new — 20 security verification tests)",
+    "/app/test_reports/iteration_2.json (new)",
+    "/app/test_reports/pytest/sec_results.xml (new)"
+  ],
+  "success_rate": {"backend": "95% (19/20)", "frontend": "N/A (backend-only verification per request)"},
+  "seed_data_creation": "POST /api/seed was idempotent ('already seeded'). One fresh worker user created per session: TEST_worker_<uuid>@example.com / Worker@123 — onboarded as plumber, completed full booking lifecycle with demo customer, received 1 five-star review, performed one withdrawal of ₹100. No destructive cleanup.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Only failing case is TestSEC003WorkerPII::test_recommendations_no_pii. Apply the one-line fix in server.py:236 (use PUBLIC_WORKER_EXCLUDE), restart backend (`sudo supervisorctl restart backend`), then re-run `pytest /app/backend/tests/test_security_fixes.py -v`. All other security findings are correctly addressed.",
+  "rca_of_issue": "RCA — SEC-003 leak in /api/workers/recommendations: The fix introduced a `PUBLIC_WORKER_EXCLUDE` projection constant (server.py:29) and applied it to /api/workers (line 223), /api/workers/popular (line 229), and /api/workers/{id} (line 273). The recommendations endpoint (line 236) was missed — it still uses the older `{'_id': 0}` projection, so `phone` and `user_id` flow through. Reproduction: POST /api/seed; POST /api/auth/login (demo creds); GET /api/workers/recommendations?category=plumber with Bearer token → response.recommendations[*] contains both 'phone' and 'user_id'. Mitigation: one-line projection change as noted in action_items."
+}
