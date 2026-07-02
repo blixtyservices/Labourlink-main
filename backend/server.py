@@ -32,6 +32,12 @@ FULL_WORKER_EXCLUDE = {"_id": 0}
 app = FastAPI(title="Labour Connect API")
 api_router = APIRouter(prefix="/api")
 
+@app.get("/")
+async def root():
+    return {
+        "status": "success",
+        "message": "LabourLink Backend is Live 🚀"
+    }
 # ============ Helpers ============
 def hash_password(pw: str) -> str:
     return bcrypt.hashpw(pw.encode(), bcrypt.gensalt()).decode()
@@ -853,3 +859,5 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=port,
     )
+    
+    
